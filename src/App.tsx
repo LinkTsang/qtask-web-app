@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { Switch, Route, Link, useLocation } from "react-router-dom";
+import {
+    Switch,
+    Route,
+    Link,
+    useRouteMatch,
+} from "react-router-dom";
 
 import { Layout, Menu } from "antd";
 import { DesktopOutlined } from "@ant-design/icons";
@@ -36,9 +41,8 @@ const routes = [
 ];
 
 function App() {
-    const location = useLocation();
+    const routerMatch = useRouteMatch<{ currentPage: string }>("/:currentPage");
     const [siderCollapsed, setSiderCollapsed] = useState<boolean>(false);
-    console.log(location);
 
     return (
         <div className="App">
@@ -60,17 +64,17 @@ function App() {
                     </Link>
                     <Menu
                         theme="dark"
-                        defaultSelectedKeys={[location.pathname]}
+                        defaultSelectedKeys={[routerMatch!.params.currentPage]}
                         mode="inline"
                     >
                         <Menu.Item
-                            key="/task-scheduler"
+                            key="task-scheduler"
                             icon={<DesktopOutlined />}
                         >
                             <Link to="/task-scheduler">Task Scheduler</Link>
                         </Menu.Item>
                         <Menu.Item
-                            key="/resource-allocation"
+                            key="resource-allocation"
                             icon={<DesktopOutlined />}
                         >
                             <Link to="/resource-allocation">
