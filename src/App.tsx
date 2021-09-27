@@ -6,6 +6,7 @@ import { DesktopOutlined } from "@ant-design/icons";
 
 import TaskScheduler from "./ui/TaskScheduler";
 import ResourceAllocation from "./ui/ResourceAllocation";
+import TaskDetailInfo from "./ui/TaskDetailInfo";
 
 import logo from "./logo.svg";
 import "antd/dist/antd.css";
@@ -22,8 +23,15 @@ const routes = [
     },
     {
         path: "/task-scheduler",
+        exact: true,
         header: () => <h2>Task Scheduler</h2>,
         content: () => <TaskScheduler />,
+    },
+    {
+        path: "/task-scheduler/detail/:id",
+        exact: true,
+        header: () => <h2>Task Detail</h2>,
+        content: () => <TaskDetailInfo />,
     },
     {
         path: "/resource-allocation",
