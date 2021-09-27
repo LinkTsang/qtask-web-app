@@ -1,37 +1,44 @@
-import React, { useState } from "react";
-import { Layout, Menu, Breadcrumb } from "antd";
+import { useState } from "react";
+import { Switch, Route, Link, useLocation } from "react-router-dom";
+
+import { Layout, Menu } from "antd";
 import { DesktopOutlined } from "@ant-design/icons";
+
+import TaskScheduler from "./ui/TaskScheduler";
+import ResourceAllocation from "./ui/ResourceAllocation";
 
 import logo from "./logo.svg";
 import "antd/dist/antd.css";
 import "./App.css";
-import TaskScheduler from "./ui/TaskScheduler";
-import ResourceAllocation from "./ui/ResourceAllocation";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-type PageKey = "task-scheduler" | "resource-allocation";
-
-const PAGE_KEY_TO_NAME = {
-    "task-scheduler": "Task Scheduler",
-    "resource-allocation": "Resource Allocation",
-};
+const routes = [
+    {
+        path: "/",
+        exact: true,
+        key: "home",
+        header: () => <h2>Home</h2>,
+        content: () => <h2>Home</h2>,
+    },
+    {
+        path: "/task-scheduler",
+        key: "task-scheduler",
+        header: () => <h2>Task Scheduler</h2>,
+        content: () => <TaskScheduler />,
+    },
+    {
+        path: "/resource-allocation",
+        key: "resource-allocation",
+        header: () => <h2>Resource Allocation</h2>,
+        content: () => <ResourceAllocation />,
+    },
+];
 
 function App() {
+    const location = useLocation();
     const [siderCollapsed, setSiderCollapsed] = useState<boolean>(false);
-    const [currentPageKey, setCurrentPageKey] =
-        useState<PageKey>("task-scheduler");
-
-    const renderContent = () => {
-        switch (currentPageKey) {
-            case "task-scheduler":
-                return <TaskScheduler />;
-            case "resource-allocation":
-                return <ResourceAllocation />;
-            default:
-                return <></>;
-        }
-    };
+    console.log(location);
 
     return (
         <div className="App">
@@ -41,46 +48,69 @@ function App() {
                     collapsed={siderCollapsed}
                     onCollapse={setSiderCollapsed}
                 >
-                    <div className="App-logo">
-                        <img src={logo} className="App-logo-icon" alt="logo" />
-                        {siderCollapsed ? "" : <span>QTask</span>}
-                    </div>
+                    <Link to="/">
+                        <div className="App-logo">
+                            <img
+                                src={logo}
+                                className="App-logo-icon"
+                                alt="logo"
+                            />
+                            {siderCollapsed ? "" : <span>QTask</span>}
+                        </div>
+                    </Link>
                     <Menu
                         theme="dark"
-                        defaultSelectedKeys={[currentPageKey]}
+                        defaultSelectedKeys={[location.pathname]}
                         mode="inline"
-                        onSelect={({ key }) => {
-                            setCurrentPageKey(key as PageKey);
-                        }}
                     >
                         <Menu.Item
-                            key="task-scheduler"
+                            key="/task-scheduler"
                             icon={<DesktopOutlined />}
                         >
-                            Task Scheduler
+                            <Link to="/task-scheduler">Task Scheduler</Link>
                         </Menu.Item>
                         <Menu.Item
-                            key="resource-allocation"
+                            key="/resource-allocation"
                             icon={<DesktopOutlined />}
                         >
-                            Resource Allocation
+                            <Link to="/resource-allocation">
+                                Resource Allocation
+                            </Link>
                         </Menu.Item>
                     </Menu>
                 </Sider>
                 <Layout className="site-layout">
                     <Header className="site-layout-background">
-                        {PAGE_KEY_TO_NAME[currentPageKey]}
+                        <Switch>
+                            {routes.map((route, index) => (
+                                <Route
+                                    key={index}
+                                    path={route.path}
+                                    exact={route.exact}
+                                    children={<route.header />}
+                                />
+                            ))}
+                        </Switch>
                     </Header>
                     <Content style={{ margin: "16px 16px" }}>
                         <div
                             className="site-layout-background"
                             style={{ padding: 24, minHeight: 360 }}
                         >
-                            {renderContent()}
+                            <Switch>
+                                {routes.map((route, index) => (
+                                    <Route
+                                        key={index}
+                                        path={route.path}
+                                        exact={route.exact}
+                                        children={<route.content />}
+                                    />
+                                ))}
+                            </Switch>
                         </div>
                     </Content>
                     <Footer style={{ textAlign: "center" }}>
-                        QTask 漏2021 Created by Bin Tsang
+                        QTask ©2021 Created by Bin Tsang
                     </Footer>
                 </Layout>
             </Layout>
