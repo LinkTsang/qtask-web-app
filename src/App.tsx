@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-    Switch,
-    Route,
-    Link,
-    useRouteMatch,
-} from "react-router-dom";
+import { Switch, Route, Link, useRouteMatch } from "react-router-dom";
 
 import { Layout, Menu } from "antd";
 import { DesktopOutlined } from "@ant-design/icons";
@@ -22,19 +17,16 @@ const routes = [
     {
         path: "/",
         exact: true,
-        key: "home",
         header: () => <h2>Home</h2>,
         content: () => <h2>Home</h2>,
     },
     {
         path: "/task-scheduler",
-        key: "task-scheduler",
         header: () => <h2>Task Scheduler</h2>,
         content: () => <TaskScheduler />,
     },
     {
         path: "/resource-allocation",
-        key: "resource-allocation",
         header: () => <h2>Resource Allocation</h2>,
         content: () => <ResourceAllocation />,
     },
