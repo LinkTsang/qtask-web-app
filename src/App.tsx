@@ -5,11 +5,33 @@ import { DesktopOutlined } from "@ant-design/icons";
 import logo from "./logo.svg";
 import "antd/dist/antd.css";
 import "./App.css";
+import TaskScheduler from "./ui/TaskScheduler";
+import ResourceAllocation from "./ui/ResourceAllocation";
 
 const { Header, Content, Footer, Sider } = Layout;
 
+type PageKey = "task-scheduler" | "resource-allocation";
+
+const PAGE_KEY_TO_NAME = {
+    "task-scheduler": "Task Scheduler",
+    "resource-allocation": "Resource Allocation",
+};
+
 function App() {
     const [siderCollapsed, setSiderCollapsed] = useState<boolean>(false);
+    const [currentPageKey, setCurrentPageKey] =
+        useState<PageKey>("task-scheduler");
+
+    const renderContent = () => {
+        switch (currentPageKey) {
+            case "task-scheduler":
+                return <TaskScheduler />;
+            case "resource-allocation":
+                return <ResourceAllocation />;
+            default:
+                return <></>;
+        }
+    };
 
     return (
         <div className="App">
@@ -25,28 +47,36 @@ function App() {
                     </div>
                     <Menu
                         theme="dark"
-                        defaultSelectedKeys={["1"]}
+                        defaultSelectedKeys={[currentPageKey]}
                         mode="inline"
+                        onSelect={({ key }) => {
+                            setCurrentPageKey(key as PageKey);
+                        }}
                     >
-                        <Menu.Item key="1" icon={<DesktopOutlined />}>
-                            Queue Task
+                        <Menu.Item
+                            key="task-scheduler"
+                            icon={<DesktopOutlined />}
+                        >
+                            Task Scheduler
+                        </Menu.Item>
+                        <Menu.Item
+                            key="resource-allocation"
+                            icon={<DesktopOutlined />}
+                        >
+                            Resource Allocation
                         </Menu.Item>
                     </Menu>
                 </Sider>
                 <Layout className="site-layout">
-                    <Header
-                        className="site-layout-background"
-                        style={{ padding: 0 }}
-                    ></Header>
-                    <Content style={{ margin: "0 16px" }}>
-                        <Breadcrumb style={{ margin: "16px 0" }}>
-                            <Breadcrumb.Item>Queue Task</Breadcrumb.Item>
-                        </Breadcrumb>
+                    <Header className="site-layout-background">
+                        {PAGE_KEY_TO_NAME[currentPageKey]}
+                    </Header>
+                    <Content style={{ margin: "16px 16px" }}>
                         <div
                             className="site-layout-background"
                             style={{ padding: 24, minHeight: 360 }}
                         >
-                            Queue Task
+                            {renderContent()}
                         </div>
                     </Content>
                     <Footer style={{ textAlign: "center" }}>
