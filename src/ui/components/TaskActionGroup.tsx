@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 import { Space, Button } from "antd";
 import TaskInfo, { TaskStatus } from "../../task/TaskInfo";
 
