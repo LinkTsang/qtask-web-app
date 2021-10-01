@@ -1,3 +1,6 @@
+![build workflow](https://github.com/linktsang/qtask-web-app/actions/workflows/build.yml/badge.svg)
+![deploy workflow](https://github.com/linktsang/qtask-web-app/actions/workflows/deploy.yml/badge.svg)
+
 # QTask web app
 
 A simple web app for [QTask](https://github.com/LinkTsang/qtask).
